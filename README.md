@@ -11,28 +11,28 @@ python start.py --smtp_host <address> --smtp_port <port> --smtp_login <login> --
 ```
 , где
 
-```--smtp_host <address>```, address - адрес, на котором smtp-сервер будет ожидать подключения, ip или имя;
-```--smtp_port <port>```, port - порт, на котором smtp-сервер будет ожидать подключения, цифра;
-```--smtp_login <login>```, login - имя пользователя для аутентификации пользователей(устройств), отправляющих письма;
-```--smtp_pass <password>```, password - пароль для аутентификации пользователей(устройств), отправляющих письма.
-```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
-```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
-```--user_db_name <dbname>```, dbname - название пользовательской БД;
-```--admin_db_host <address>```, address - адрес, на котором ожидает подключения сервер с БД администратора, ip или имя;
-```--admin_db_port <port>```, port - порт, на котором ожидает подключения сервер с БД администратора, ip или имя;
-```--admin_db_username <username>```, username - имя пользователя для подключения к БД администратора;
-```--admin_db_password <password>```, password - пароль для подключения к БД администратора;
-```--admin_db_name <dbname>```, dbname - название БД администратора;
-```--smtp2go_host <address>```, address - адрес сервиса SMTP2GO, ip или имя;
-```--smtp2go_port <port>```, port - порт сервиса SMTP2GO, цифра;
-```--smtp2go_user <user>```, user - пользователь для подключения к сервису SMTP2GO;
-```--smtp2go_pass <password>```, password - пароль для подключения к сервису SMTP2GO.
-```--web_host <address>```, address - адрес, на котором web-сервер будет ожидать подключения, ip или имя;
-```--web_port <port>```, port - порт, на котором web-сервер будет ожидать подключения, цифра;
-```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
-```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
+- ```--smtp_host <address>```, address - адрес, на котором smtp-сервер будет ожидать подключения, ip или имя;
+- ```--smtp_port <port>```, port - порт, на котором smtp-сервер будет ожидать подключения, цифра;
+- ```--smtp_login <login>```, login - имя пользователя для аутентификации пользователей(устройств), отправляющих письма;
+- ```--smtp_pass <password>```, password - пароль для аутентификации пользователей(устройств), отправляющих письма.
+- ```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+- ```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+- ```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
+- ```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
+- ```--user_db_name <dbname>```, dbname - название пользовательской БД;
+- ```--admin_db_host <address>```, address - адрес, на котором ожидает подключения сервер с БД администратора, ip или имя;
+- ```--admin_db_port <port>```, port - порт, на котором ожидает подключения сервер с БД администратора, ip или имя;
+- ```--admin_db_username <username>```, username - имя пользователя для подключения к БД администратора;
+- ```--admin_db_password <password>```, password - пароль для подключения к БД администратора;
+- ```--admin_db_name <dbname>```, dbname - название БД администратора;
+- ```--smtp2go_host <address>```, address - адрес сервиса SMTP2GO, ip или имя;
+- ```--smtp2go_port <port>```, port - порт сервиса SMTP2GO, цифра;
+- ```--smtp2go_user <user>```, user - пользователь для подключения к сервису SMTP2GO;
+- ```--smtp2go_pass <password>```, password - пароль для подключения к сервису SMTP2GO.
+- ```--web_host <address>```, address - адрес, на котором web-сервер будет ожидать подключения, ip или имя;
+- ```--web_port <port>```, port - порт, на котором web-сервер будет ожидать подключения, цифра;
+- ```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
+- ```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
 
 Ручной запуск остальных модулей обычно не требуется.
 
@@ -43,17 +43,17 @@ python smtp.py --smtp_host <address> --smtp_port <port> --smtp_login <login> --s
 ```
 , где
 
-```--smtp_host <address>```, address - адрес, на котором smtp-сервер будет ожидать подключения, ip или имя;
-```--smtp_port <port>```, port - порт, на котором smtp-сервер будет ожидать подключения, цифра;
-```--smtp_login <login>```, login - имя пользователя для аутентификации пользователей(устройств), отправляющих письма;
-```--smtp_pass <password>```, password - пароль для аутентификации пользователей(устройств), отправляющих письма.
-```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
-```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
-```--user_db_name <dbname>```, dbname - название пользовательской БД;
-```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
-```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
+- ```--smtp_host <address>```, address - адрес, на котором smtp-сервер будет ожидать подключения, ip или имя;
+- ```--smtp_port <port>```, port - порт, на котором smtp-сервер будет ожидать подключения, цифра;
+- ```--smtp_login <login>```, login - имя пользователя для аутентификации пользователей(устройств), отправляющих письма;
+- ```--smtp_pass <password>```, password - пароль для аутентификации пользователей(устройств), отправляющих письма.
+- ```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+- ```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+- ```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
+- ```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
+- ```--user_db_name <dbname>```, dbname - название пользовательской БД;
+- ```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
+- ```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
 
 ## tasks.py
 Модуль обработки писем. Извлекает из полученных писем данные, вставляет их в шаблоны и рассылает получателям.
@@ -63,22 +63,22 @@ python start.py --user_db_host <address> --user_db_port <port> --user_db_usernam
 ```
 , где
 
-```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
-```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
-```--user_db_name <dbname>```, dbname - название пользовательской БД;
-```--admin_db_host <address>```, address - адрес, на котором ожидает подключения сервер с БД администратора, ip или имя;
-```--admin_db_port <port>```, port - порт, на котором ожидает подключения сервер с БД администратора, ip или имя;
-```--admin_db_username <username>```, username - имя пользователя для подключения к БД администратора;
-```--admin_db_password <password>```, password - пароль для подключения к БД администратора;
-```--admin_db_name <dbname>```, dbname - название БД администратора;
-```--smtp2go_host <address>```, address - адрес сервиса SMTP2GO, ip или имя;
-```--smtp2go_port <port>```, port - порт сервиса SMTP2GO, цифра;
-```--smtp2go_user <user>```, user - пользователь для подключения к сервису SMTP2GO;
-```--smtp2go_pass <password>```, password - пароль для подключения к сервису SMTP2GO.
-```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
-```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
+-  ```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+-  ```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+-  ```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
+-  ```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
+-  ```--user_db_name <dbname>```, dbname - название пользовательской БД;
+-  ```--admin_db_host <address>```, address - адрес, на котором ожидает подключения сервер с БД администратора, ip или имя;
+-  ```--admin_db_port <port>```, port - порт, на котором ожидает подключения сервер с БД администратора, ip или имя;
+-  ```--admin_db_username <username>```, username - имя пользователя для подключения к БД администратора;
+-  ```--admin_db_password <password>```, password - пароль для подключения к БД администратора;
+-  ```--admin_db_name <dbname>```, dbname - название БД администратора;
+-  ```--smtp2go_host <address>```, address - адрес сервиса SMTP2GO, ip или имя;
+-  ```--smtp2go_port <port>```, port - порт сервиса SMTP2GO, цифра;
+-  ```--smtp2go_user <user>```, user - пользователь для подключения к сервису SMTP2GO;
+-  ```--smtp2go_pass <password>```, password - пароль для подключения к сервису SMTP2GO.
+-  ```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
+-  ```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
 
 ## web.py
 WEB-интерфейс для пользователей сервиса. Позволяет просматривать статистику и создавать/редактировать собственные шаблоны для уведомлений.
@@ -88,17 +88,17 @@ python start.py --user_db_host <address> --user_db_port <port> --user_db_usernam
 ```
 , где
 
-```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
-```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
-```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
-```--user_db_name <dbname>```, dbname - название пользовательской БД;
-```--admin_db_host <address>```, address - адрес, на котором ожидает подключения сервер с БД администратора, ip или имя;
-```--admin_db_port <port>```, port - порт, на котором ожидает подключения сервер с БД администратора, ip или имя;
-```--admin_db_username <username>```, username - имя пользователя для подключения к БД администратора;
-```--admin_db_password <password>```, password - пароль для подключения к БД администратора;
-```--admin_db_name <dbname>```, dbname - название БД администратора;
-```--web_host <address>```, address - адрес, на котором web-сервер будет ожидать подключения, ip или имя;
-```--web_port <port>```, port - порт, на котором web-сервер будет ожидать подключения, цифра;
-```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
-```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
+- ```--user_db_host <address>```, address - адрес, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+- ```--user_db_port <port>```, port - порт, на котором ожидает подключения сервер с пользовательской БД, ip или имя;
+- ```--user_db_username <username>```, username - имя пользователя для подключения к пользовательской БД;
+- ```--user_db_password <password>```, password - пароль для подключения к пользовательской БД;
+- ```--user_db_name <dbname>```, dbname - название пользовательской БД;
+- ```--admin_db_host <address>```, address - адрес, на котором ожидает подключения сервер с БД администратора, ip или имя;
+- ```--admin_db_port <port>```, port - порт, на котором ожидает подключения сервер с БД администратора, ip или имя;
+- ```--admin_db_username <username>```, username - имя пользователя для подключения к БД администратора;
+- ```--admin_db_password <password>```, password - пароль для подключения к БД администратора;
+- ```--admin_db_name <dbname>```, dbname - название БД администратора;
+- ```--web_host <address>```, address - адрес, на котором web-сервер будет ожидать подключения, ip или имя;
+- ```--web_port <port>```, port - порт, на котором web-сервер будет ожидать подключения, цифра;
+- ```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
+- ```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
