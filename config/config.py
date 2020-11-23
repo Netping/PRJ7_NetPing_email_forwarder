@@ -4,6 +4,9 @@ Module service configuration
 Contains current version and functions for parse CLI arguments.
 """
 import argparse
+import logging
+import os
+import typing
 
 
 VERSION = '0'
@@ -136,3 +139,30 @@ def add_logs(parser: argparse.ArgumentParser) -> None:
                         help=('Dir for log.txt. Example for current dir, .'))
     parser.add_argument('--error_log_dir', required=True, type=str,
                         help=('Dir for errors.txt. Example for current dir, .'))
+
+
+def get_loggers(log_dir: str, error_log_dir: str, prefix: str) -> typing.Tuple[logging.Logger, logging.Logger]:
+    formatter = logging.Formatter(f'%(levelname)s %(asctime)s - {prefix} - %(message)s')
+
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    log = logging.getLogger("main")
+    handler = logging.FileHandler(
+        os.path.join(log_dir, 'logs.txt'),
+        encoding='utf8')
+    handler.setFormatter(formatter)
+    log.addHandler(handler)
+    log.setLevel(10)
+    
+    if not os.path.exists(error_log_dir):
+        os.makedirs(error_log_dir)
+    errors = logging.getLogger("errors")
+    err_handler = logging.FileHandler(
+        os.path.join(error_log_dir, 'errors.txt'),
+        encoding='utf8')
+    err_handler.setFormatter(formatter)
+    errors.addHandler(err_handler)
+    errors.setLevel(10)
+
+    return (log, errors)
+
