@@ -19,7 +19,7 @@ schemas = {
                 template text not null
             );
         ''',
-        
+
         # Таблица шаблонов для отправки исходящих писем
         '''
         create table if not exists outbound_templates
@@ -66,6 +66,7 @@ schemas = {
     ]
 }
 
+
 class DB:
     """
     Class for work with DB.
@@ -77,7 +78,8 @@ class DB:
         - password -- password for connect to DB server
         - dbname -- database name
     """
-    def __init__(self, host: str, port: int, username: str, password: str, dbname: str):
+    def __init__(self, host: str, port: int, username: str, password: str,
+                 dbname: str):
         self.host = host
         self.port = port
         self.username = username
@@ -89,7 +91,8 @@ class DB:
         Connect to database server
         """
         self.connection = psycopg2.connect(host=self.host, port=self.port,
-                                           user=self.username, password=self.password,
+                                           user=self.username,
+                                           password=self.password,
                                            dbname=self.dbname)
 
     def cursor(self):
@@ -98,9 +101,10 @@ class DB:
         """
         if not hasattr(self, 'connection') or not self.connection:
             raise Exception('Нет подключения к БД')
-        return self.connection.cursor(cursor_factory=psycopg2.extras.DictCursor)
+        return self.connection.cursor(
+            cursor_factory=psycopg2.extras.DictCursor)
 
-    def execute(self, sql, args=()) -> typing.List(typing.Dict,...):
+    def execute(self, sql, args=()) -> typing.List[typing.Dict]:
         """
         Execute query
 
@@ -126,7 +130,7 @@ class DB:
             self.execute(sql)
 
 
-def create_db(host: str, port: int, username: str, password: str, dbname: str)
+def create_db(host: str, port: int, username: str, password: str, dbname: str):
     db = DB(host, port, username, password, dbname)
     db.connect()
     return db
