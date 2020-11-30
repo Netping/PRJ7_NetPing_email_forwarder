@@ -1,6 +1,6 @@
 import unittest
 
-from templates.outbound_template import OutboundTemplates
+from email_forwarder.templates.outbound_template import OutboundTemplate
 
 
 class TestOutboundTemplates(unittest.TestCase):
@@ -30,7 +30,7 @@ class TestOutboundTemplates(unittest.TestCase):
             'value_2': '456',
             'value_3': '789',
         }
-        template = OutboundTemplates(1, 1, 'Template #1', test_template, None)
+        template = OutboundTemplate(1, 1, 'Template #1', test_template, None)
         html = template.html(values)
         assert html == test_html, (f'Ожидаемый html:\n{test_html}\n'
                                    f'Полученный:\n{html}')
@@ -90,7 +90,7 @@ class TestOutboundTemplates(unittest.TestCase):
                 }
             ]
         }
-        template = OutboundTemplates(1, 1, 'Template #1', test_template, None)
+        template = OutboundTemplate(1, 1, 'Template #1', test_template, None)
         html = template.html(values)
         assert html == test_html, (f'Ожидаемый html:\n{test_html}\n'
                                    f'Полученный:\n{html}')

@@ -1,6 +1,6 @@
 import unittest
 
-from templates.inbound_template import InboundTemplate
+from email_forwarder.templates.inbound_template import InboundTemplate
 
 
 class TestInboundTemplate(unittest.TestCase):
