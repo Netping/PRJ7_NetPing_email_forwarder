@@ -3,7 +3,7 @@ import unittest
 from email_forwarder.templates.outbound_template import OutboundTemplate
 
 
-class TestOutboundTemplates(unittest.TestCase):
+class TestOutboundTemplate(unittest.TestCase):
     def test_html(self):
         test_template = '''
 <html>
