@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NetPing Email Forwarder - {{ user }}</title>
+    </head>
+
+    <body>
+        <h1>{{user}}</h1>
+        <p>Статистика: получено - {{ stat.total }}, переслано - {{ stat.sent }}, не удалось извлечь данные - {{ stat.errors }}</p>
+        {% if errors %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Получатель(-и)</th>
+                    <th>Содержание</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for error in errors %}
+                <tr>
+                    <td>{{ error.date }}</td>
+                    <td>{{ error.to }}</td>
+                    <td>{{ error.body }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        <ul>
+            {% for template in templates %}
+            <li><a href="{{request.path|urlencode}}/{{template.template_id}}">{{template.name}}</a></li>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

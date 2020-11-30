@@ -53,4 +53,21 @@ class OutboundFactory:
         templates = [OutboundTemplate(
             db=self.db, logs=self.logs, errors=self.errors,
             **template) for template in res]
-        return templates
+        return templates[0] if templates else None
+
+    def save_template_for_user(self, user: str, inbound_template_id: int,
+                               name: str, template: str):
+        sql = '''
+        insert into outbound_templates(user, inbound_template_id,
+                                       name, template)
+        values(%s,%s, %s, %s)
+        on conflict on constraint one_outbound_template
+        do
+            update set template = %s
+        returning id;
+        '''
+        print(user, inbound_template_id, name, template)
+        # res = self.db.execute(sql,
+        #                       (user, inbound_template_id, name, template))
+        # return OutboundTemplate(
+        #     db=self.db, logs=self.logs, errors=self.errors, **res[0])

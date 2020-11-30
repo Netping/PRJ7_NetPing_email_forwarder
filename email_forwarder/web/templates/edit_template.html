@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>NetPing Email Forwarder - {{ user }} - {{ template.name }}</title>
+    </head>
+
+    <body>
+        <h1>
+            Шаблон {{ template.name }}</pre>
+        </h1>
+
+        <p>
+            <pre>{{ template.template }}</pre>
+        </p>
+
+        <form method="PUT">
+            <textarea name="template">{{ outbound.template }}</textarea>
+            <button>Сохранить</button>
+        </form>
+    </body>
+</html>

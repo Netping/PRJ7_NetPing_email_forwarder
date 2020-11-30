@@ -3,7 +3,7 @@ import typing
 from jinja2 import Environment
 
 
-class OutboundTemplates:
+class OutboundTemplate:
     def __init__(self, template_id: int, inbound_template_id: int,
                  name: str, template: str, user: typing.Optional[str]):
         self.template_id = template_id
