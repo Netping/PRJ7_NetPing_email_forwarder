@@ -10,7 +10,7 @@ import typing
 import smtpd
 from datetime import datetime
 
-from mails.mailbox import MailBox
+from email_forwarder.mails.mailbox import MailBox
 
 
 def decode_b64(data):

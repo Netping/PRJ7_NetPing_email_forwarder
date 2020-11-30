@@ -9,8 +9,8 @@ from datetime import datetime
 import jinja2
 
 from .sender import Sender
-from .mailbox import MailBox
-from templates.inbound_templates import InboundTemplate
+# from .mailbox import MailBox
+from email_forwarder.templates.inbound_template import InboundTemplate
 
 
 class Mail:
@@ -64,7 +64,7 @@ class Mail:
                               (self.mail_id, ))
         return Mail(db=self.db, logs=self.logs, errors=self.errors, **res[0])
 
-    def parse(self, templates: typing.List[InboundTemplate, ...]) -> 'Mail':
+    def parse(self, templates: typing.List[InboundTemplate]) -> 'Mail':
         """
         Parse mail's body.
         If success save data and inbound template id, body set to null.
@@ -91,7 +91,7 @@ class Mail:
         return self._save_parse_info(inbound_template_id,
                                      data if data else None)
 
-    def _prepare_mail(self, mails: typing.List['Mail', ...],
+    def _prepare_mail(self, mails: typing.List['Mail'],
                       template: jinja2.Template) -> str:
         """
         Prepare html text(html) using data from current mail
@@ -122,7 +122,7 @@ class Mail:
         return Mail(db=self.db, logs=self.logs, errors=self.errors, **res[0])
 
     def send(self, sender: Sender, template_fabric,
-             mailbox: MailBox) -> 'Mail':
+             mailbox: 'MailBox') -> 'Mail':
         """
         Send mail to recipient.
 

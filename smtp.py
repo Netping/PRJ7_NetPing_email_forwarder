@@ -1,9 +1,9 @@
 import asyncore
 
-from config import VERSION, get_parser, get_loggers
-from db import create_db
-from mails.mailbox import MailBox
-from smtp_server.smtp_server import ProxySMTPServer
+from email_forwarder.config import VERSION, get_parser, get_loggers
+from email_forwarder.db import create_db
+from email_forwarder.mails.mailbox import MailBox
+from email_forwarder.smtp_server.smtp_server import ProxySMTPServer
 
 
 def run_smtp_proxy(config):

@@ -1,7 +1,7 @@
 import logging
 import typing
 
-from db.DB import DB
+from email_forwarder.db.db import DB
 
 from .mail import Mail
 
@@ -18,7 +18,7 @@ class MailBox:
         return Mail(db=self.db, logs=self.logs, errors=self.errors,
                     **res[0])
 
-    def get_user_mails(self, sender) -> typing.List[Mail, ...]:
+    def get_user_mails(self, sender) -> typing.List[Mail]:
         res = self.db.execute(('select * from mails where sender = %s;'),
                               (sender, ))
         return [Mail(db=self.db, logs=self.logs, errors=self.errors,
@@ -31,7 +31,7 @@ class MailBox:
             (sender, receive_date, recieve_meta, body))
         return self.get_mail(res[0]['id'])
 
-    def mail_queue(self) -> typing.List[Mail, ...]:
+    def mail_queue(self) -> typing.List[Mail]:
         res = self.db.execute(
             'select * from mails where inbound_template_id is null;')
         return [Mail(db=self.db, logs=self.logs, errors=self.errors,
