@@ -78,7 +78,6 @@ class AuthChannel(smtpd.SMTPChannel):
         if not arg:
             self.push('501 Syntax: EHLO hostname')
             return
-        # See issue #21783 for a discussion of this behavior.
         if self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
             return
@@ -109,7 +108,6 @@ class AuthChannel(smtpd.SMTPChannel):
         if not arg:
             self.push('501 Syntax: HELO hostname')
             return
-        # See issue #21783 for a discussion of this behavior.
         if self.seen_greeting:
             self.push('503 Duplicate HELO/EHLO')
             return
