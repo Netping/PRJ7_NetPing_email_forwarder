@@ -1,8 +1,7 @@
 from db import create_db
 from config import VERSION, get_parser, get_loggers
 
-if __name__ == '__main__':
-    config = get_parser(f'NetPIng Email forwarder v.{VERSION}.').parse_args()
+def run(config):
     log, error_log = get_loggers(config.log_dir, config.error_log_dir, 'start.py')
     log.info(f'Start NetPIng Email forwarder v.{VERSION}.')
     
@@ -15,3 +14,8 @@ if __name__ == '__main__':
                         config.user_db_username, config.user_db_password,
                         config.user_db_name)
     user_db.check_structure('user')
+
+
+if __name__ == '__main__':
+    config = get_parser(f'NetPIng Email forwarder v.{VERSION}.').parse_args()
+    run(config)

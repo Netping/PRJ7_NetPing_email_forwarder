@@ -7,16 +7,6 @@ from email_forwarder.smtp_server.smtp_server import ProxySMTPServer
 
 
 def run_smtp_proxy(config):
-    ProxySMTPServer((config.smtp_host, config.smtp_port),
-                    (config.smtp_login, config.smtp_pass),
-                    mailbox, log, error_log)
-    asyncore.loop()
-
-
-if __name__ == '__main__':
-    config = get_parser(
-        f'NetPIng Email forwarder v.{VERSION}, SMTP-Proxy server.',
-        ('user_db', 'smtp')).parse_args()
     log, error_log = get_loggers(config.log_dir, config.error_log_dir,
                                  'smtp.py')
     log.info(f'NetPIng Email forwarder v.{VERSION}, SMTP-Proxy server.')
@@ -30,3 +20,11 @@ if __name__ == '__main__':
     ProxySMTPServer((config.smtp_host, config.smtp_port),
                     (config.smtp_login, config.smtp_pass),
                     mailbox, log, error_log)
+    asyncore.loop()
+
+
+if __name__ == '__main__':
+    config = get_parser(
+        f'NetPIng Email forwarder v.{VERSION}, SMTP-Proxy server.',
+        ('user_db', 'smtp')).parse_args()
+    run_smtp_proxy(config)
