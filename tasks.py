@@ -9,7 +9,7 @@ from email_forwarder.templates.outbound_factory import OutboundFactory
 from email_forwarder.templates.factory_wrapper import FactoryWrapper
 
 
-def tasks(config):
+def run_tasks(config):
     log, error_log = get_loggers(config.log_dir, config.error_log_dir,
                                  'web.py')
     log.info(f'NetPIng Email forwarder v.{VERSION}, Tasks.')
@@ -45,4 +45,4 @@ def tasks(config):
 if __name__ == '__main__':
     config = get_parser(f'NetPIng Email forwarder v.{VERSION}, Tasks.',
                         ('user_db', 'admin_db', 'smtp2go')).parse_args()
-    tasks(config)
+    run_tasks(config)
