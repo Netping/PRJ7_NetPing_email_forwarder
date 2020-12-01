@@ -67,7 +67,9 @@ class WebServer:
             errors = [
                 {
                     'date': mail.receive_date.strftime('%Y-%m-%d %H:%M:%S'),
-                    'to': mail.receive_meta.get('To', ''),
+                    'to': (', '.join(mail.receive_meta.get('To', ''))
+                           if isinstance(mail.receive_meta.get('To', ''), list)
+                           else mail.receive_meta.get('To', '')),
                     'body': mail.body,
                 } for mail in sorted(
                     user_mails, key=lambda m: m.receive_date,
