@@ -32,7 +32,7 @@ class WebServer:
         self.app.add_url_rule('/<user>/<template_id>',
                               'edit_outbound_template',
                               self.edit_outbound_template,
-                              methods=['GET', 'PUT'])
+                              methods=['GET', 'POST'])
 
     def index(self):
         if flask.request.method == 'POST':
@@ -80,23 +80,25 @@ class WebServer:
 
     def edit_outbound_template(self, user, template_id):
         template = [tmp for tmp in self.inbound_templates
-                    if tmp.template_id == template_id]
+                    if str(tmp.template_id) == str(template_id)]
+        # admoin_outbound = [tmp for tmp in self.outbound_admin_templates
+        #                    if str(tmp.inbound_template_id) == str(template_id)]
         if template:
             template = template[0]
         else:
             return flask.redirect(flask.url_for('index'))
 
-        if flask.request.method == 'PUT':
+        if flask.request.method == 'POST':
             self.log.info('Сохранение пользовательского шаблона:')
             self.log.info('user: %s', user)
             self.log.info('inbound_teplate_id: %s', template_id)
             try:
                 name = flask.request.form.get('name', '')
-                template = flask.request.form.get('template', None)
+                new_template = flask.request.form.get('template', None)
                 self.log.info('name: %s', name)
-                self.log.info('template: %s', template)
+                self.log.info('template: %s', new_template)
                 outbound = self.outbound_templates.save_template_for_user(
-                    user, int(template_id), name, template)
+                    user, int(template_id), name, new_template)
                 action = 'Сохранено'
             except Exception as e:
                 action = 'Ошибка сохранения'
@@ -106,16 +108,19 @@ class WebServer:
         else:
             self.log.info(
                 ('Редактирование пользовательского шаблона: '
-                 'user - %s, inbound_teplate_id - %s'), (user, template_id))
+                 'user - %s, inbound_teplate_id - %s'), user, template_id)
             try:
                 action = None
                 outbound = self.outbound_templates.template_by_user(
                     user, template_id)
                 if not outbound:
                     outbound = [tmp for tmp in self.outbound_admin_templates
-                                if tmp.inbound_template_id == template_id]
+                                if str(tmp.inbound_template_id) == str(
+                                    template_id)]
+                    if outbound:
+                        outbound = outbound[0]
             except Exception as e:
-                action = 'Ошибка сохранения'
+                action = 'Ошибка редактирования'
                 self.errors.error(
                     'Ошибка редактирования пользовательского шаблона: %s',
                     str(e))
@@ -126,5 +131,4 @@ class WebServer:
                                      action=action)
 
     def run(self):
-        print('runs')
         self.app.run(self.host, self.port)

@@ -46,7 +46,7 @@ class OutboundFactory:
                     template.inbound_template_id == inbound_template_id]
         res = self.db.execute(
             ('select * from outbound_templates '
-             'where user= %s and inbound_template_id = %s;'),
+             'where "user"= %s and inbound_template_id = %s;'),
             (user, inbound_template_id))
         templates = [OutboundTemplate(
             db=self.db, logs=self.logs, errors=self.errors,
@@ -56,15 +56,17 @@ class OutboundFactory:
     def save_template_for_user(self, user: str, inbound_template_id: int,
                                name: str, template: str):
         sql = '''
-        insert into outbound_templates(user, inbound_template_id,
+        insert into outbound_templates("user", inbound_template_id,
                                        name, template)
-        values(%s,%s, %s, %s)
+        values(%s, %s, %s, %s)
         on conflict on constraint one_outbound_template
         do
             update set template = %s
         returning id;
         '''
         res = self.db.execute(sql,
-                              (user, inbound_template_id, name, template))
+                              (user, inbound_template_id, name, template, template))
+        res = self.db.execute('select * from outbound_templates where id = %s;',
+                              (res[0]['id'], ))
         return OutboundTemplate(
             db=self.db, logs=self.logs, errors=self.errors, **res[0])
