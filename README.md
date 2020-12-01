@@ -16,7 +16,8 @@ pip install -r requirements.txt
 ## Изменения в схемах баз данных
 После публикации первой версии все последующие изменения в текущих таблицах делать только через ```alter table```. В противном случае можно нарушить целостность и потерять часть или все данные.
 
-## start.py
+## Запуск
+### start.py
 Основной модуль. Проверяет структуры пользовательской и БД администратора и запускает остальные части сервиса.
 Запуск:
 ```bash
@@ -49,7 +50,7 @@ python start.py --smtp_host <address> --smtp_port <port> --smtp_login <login> --
 
 Ручной запуск остальных модулей обычно не требуется.
 
-## smtp.py
+### smtp.py
 SMTP-сервер. Принимает запросы от клиентов, аутентифицирует, принимает письма и добавляет их в очередь для дальнейшей обработки.
 ```bash
 python smtp.py --smtp_host <address> --smtp_port <port> --smtp_login <login> --smtp_pass <password> --user_db_host <address> --user_db_port <port> --user_db_username <username> --user_db_password <password> --user_db_name <dbname> --log_dir <dir> --error_log_dir <dir>
@@ -68,7 +69,7 @@ python smtp.py --smtp_host <address> --smtp_port <port> --smtp_login <login> --s
 - ```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
 - ```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
 
-## tasks.py
+### tasks.py
 Модуль обработки писем. Извлекает из полученных писем данные, вставляет их в шаблоны и рассылает получателям.
 Запуск:
 ```bash
@@ -93,7 +94,7 @@ python start.py --user_db_host <address> --user_db_port <port> --user_db_usernam
 -  ```--log_dir <dir>```, dir - каталог хранения лога logs.txt;
 -  ```--error_log_dir <dir>```, dir - каталог хранения лога errors.txt.
 
-## web.py
+### web.py
 WEB-интерфейс для пользователей сервиса. Позволяет просматривать статистику и создавать/редактировать собственные шаблоны для уведомлений.
 Запуск:
 ```bash
