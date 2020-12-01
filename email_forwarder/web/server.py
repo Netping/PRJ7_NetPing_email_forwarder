@@ -98,6 +98,7 @@ class WebServer:
         else:
             return flask.redirect(flask.url_for('index'))
 
+        action = None
         if flask.request.method == 'POST':
             self.log.info('Сохранение пользовательского шаблона:')
             self.log.info('user: %s', user)
@@ -109,7 +110,8 @@ class WebServer:
                 self.log.info('template: %s', new_template)
                 outbound = self.outbound_templates.save_template_for_user(
                     user, int(template_id), name, new_template)
-                action = 'Сохранено'
+                return flask.redirect(
+                    flask.url_for('user_page', user=user))
             except Exception as e:
                 action = 'Ошибка сохранения'
                 self.errors.error(
@@ -120,7 +122,6 @@ class WebServer:
                 ('Редактирование пользовательского шаблона: '
                  'user - %s, inbound_teplate_id - %s'), user, template_id)
             try:
-                action = None
                 outbound = self.outbound_templates.template_by_user(
                     user, template_id)
                 if not outbound:
