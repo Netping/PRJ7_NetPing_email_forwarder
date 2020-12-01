@@ -3,6 +3,7 @@ import typing
 import traceback
 
 import flask
+from waitress import serve
 
 from email_forwarder.mails.mailbox import MailBox
 from email_forwarder.templates.inbound_template import InboundTemplate
@@ -131,4 +132,5 @@ class WebServer:
                                      action=action)
 
     def run(self):
-        self.app.run(self.host, self.port)
+        logging.getLogger('waitress').setLevel(logging.NOTSET)
+        serve(self.app, host=self.host, port=self.port)

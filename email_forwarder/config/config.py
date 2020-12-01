@@ -146,14 +146,14 @@ def get_loggers(log_dir: str, error_log_dir: str, prefix: str) -> typing.Tuple[l
 
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
-    log = logging.getLogger("main")
+    log = logging.getLogger("logs")
     handler = logging.FileHandler(
         os.path.join(log_dir, 'logs.txt'),
         encoding='utf8')
     handler.setFormatter(formatter)
     log.addHandler(handler)
     log.setLevel(10)
-    
+
     if not os.path.exists(error_log_dir):
         os.makedirs(error_log_dir)
     errors = logging.getLogger("errors")
@@ -165,4 +165,3 @@ def get_loggers(log_dir: str, error_log_dir: str, prefix: str) -> typing.Tuple[l
     errors.setLevel(10)
 
     return (log, errors)
-
