@@ -5,6 +5,7 @@ Base class with parse and send functions.
 """
 import typing
 import json
+import traceback
 from datetime import datetime
 
 import jinja2
@@ -75,10 +76,17 @@ class Mail:
         Args:
             - templates -- list of template whom trying for text
         """
+        self.logs.info('Извлечение данных из письма id:%s', self.mail_id)
+        self.logs.info('Текст письма: %s', self.body)
         if self.inbound_template_id:
+            self.errors.error('Ошибка, письмо id:%s уже обработано',
+                              self.mail_id)
             raise Exception(f'Mail id:{self.mail_id} already parsed')
         if not self.body:
-            raise Exception(f'Mail id:{self.mail_id} have no body. Nothing to parse')
+            self.errors.error('Ошибка, у письма id:%s нет текста',
+                              self.mail_id)
+            raise Exception(
+                f'Mail id:{self.mail_id} have no body. Nothing to parse')
 
         inbound_template_id = -1
         data = None
@@ -86,11 +94,30 @@ class Mail:
         for template in templates:
             data = template.parse(self.body)
             if data:
+                self.logs.info(('Извлечение данных из письма id:%s,'
+                               'подобран шаблон входящих писем id:%s'),
+                               self.mail_id, template.template_id)
                 inbound_template_id = template.template_id
                 break
 
-        return self._save_parse_info(inbound_template_id,
-                                     data if data else None)
+        if inbound_template_id == -1:
+            self.logs.info('Не удалось подобрать шаблон для письма id:%s',
+                          self.mail_id)
+
+        try:
+            self.logs.info(('Сохранение извлеченных данных из письма id:%s, '
+                           'данные:%s'), self.mail_id, data)
+            return self._save_parse_info(inbound_template_id,
+                                         data if data else None)
+        except Exception as e:
+            self.errors.error('Ошибка сохранения извлеченных данных: %s',
+                              str(e))
+            self.errors.error('Письмо %s', str(self.mail_id))
+            self.errors.error('Идентификатор шаблона для входящих писем %s',
+                              str(inbound_template_id))
+            self.errors.error('Извлеченные данные %s', str(data))
+            self.errors.error(traceback.format_exc())
+            raise
 
     def _prepare_mail(self, mails: typing.List['Mail'],
                       template: jinja2.Template) -> str:
@@ -133,19 +160,41 @@ class Mail:
             - mailbox -- mails fabric, for getting previous mails of user
                          parsed with the same inbound template
         """
+        self.logs.info('Пересылка письма id:%s', self.mail_id)
         if not self.inbound_template_id:
+            self.errors.error('Ошибка, письмо id:%s еще не обработано',
+                              self.mail_id)
             raise Exception(f'Mail id:{self.mail_id} not parsed yet')
         if self.inbound_template_id < 0:
-            raise Exception(f'Mail id:{self.mail_id} not parsed, template not found')
+            self.errors.error('Ошибка, письмо id:%s не удалось обработать',
+                              self.mail_id)
+            raise Exception(
+                f'Mail id:{self.mail_id} not parsed, template not found')
 
+        outbound_template = self.get_template(template_fabric)
+        if not outbound_template:
+            self.errors.error(('Ошибка, для письма id:%s не удалось '
+                               'подобрать шаблон для пересылки'),
+                              self.mail_id)
+            return self
         body = self._prepare_mail(
-            mailbox.get_user_template_mails(self.sender, self.inbound_template_id),
-            self.get_template(template_fabric))
+            mailbox.get_user_template_mails(self.sender,
+                                            self.inbound_template_id),
+            outbound_template)
         recipient = self.receive_meta.get('To', '')
         subject = self.receive_meta.get('Subject', '')
+        self.logs.info('Отправление письма id:%s', self.mail_id)
+        self.logs.info('Получатель:%s', recipient)
+        self.logs.info('Заголовок:%s', subject)
+        self.logs.info('Текст:%s', body)
         send_meta = sender.send(self.sender, recipient, subject, body)
 
+        self.logs.info('Сохранение метаданных письма id:%s : %s',
+                      self.mail_id, send_meta)
         return self._save_send_info(send_meta, datetime.now())
+
+    def can_send(self) -> bool:
+        return self.inbound_template_id >= 0
 
     def get_template(self, fabric):
         return fabric.get_user_template(self.sender, self.inbound_template_id)

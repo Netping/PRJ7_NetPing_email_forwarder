@@ -31,13 +31,19 @@ def encode_b64(data):
 
 
 class AuthChannel(smtpd.SMTPChannel):
-    def __init__(self, authdata, server, conn, addr, *args, **kwargs):
+    def __init__(self, authdata: typing.Tuple[str, str],
+                 log: logging.Logger, errors: logging.Logger,
+                 server: smtpd.SMTPServer, conn: typing.Tuple[str, int],
+                 addr: typing.Optional[typing.Tuple[str, int]],
+                 *args, **kwargs):
         super().__init__(server, conn, addr, *args, **kwargs)
         self.username = authdata[0]
         self.password = authdata[1]
         self.authenticated = False
         self.authenticating = False
         self.credential_instance = None
+        self.logs = log
+        self.errors = errors
 
     def validate_credential(self, username: str, password: str):
         """
@@ -56,6 +62,7 @@ class AuthChannel(smtpd.SMTPChannel):
         Args:
             - arg -- base64-encoded string AUTH PLAIN\0username\0password
         """
+        self.logs.info('Получен запрос AUTH %s', arg)
         if 'PLAIN' in arg:
             split_args = arg.split(' ')
             # second arg is Base64-encoded string of blah\0username\0password
@@ -78,6 +85,7 @@ class AuthChannel(smtpd.SMTPChannel):
         Args:
             - arg -- hostname
         """
+        self.logs.info('Получен запрос EHLO %s', arg)
         if not arg:
             self.push('501 Syntax: EHLO hostname')
             return
@@ -108,6 +116,7 @@ class AuthChannel(smtpd.SMTPChannel):
         Args:
             - arg -- hostname
         """
+        self.logs.info('Получен запрос HELO %s', arg)
         if not arg:
             self.push('501 Syntax: HELO hostname')
             return
@@ -150,7 +159,7 @@ class ProxySMTPServer(smtpd.SMTPServer):
                  errors: logging.Logger):
         super(ProxySMTPServer, self).__init__(localaddr, None)
         self.channel_class = lambda *args, **kwargs: AuthChannel(
-            authdata, *args, **kwargs)
+            authdata, log, errors, *args, **kwargs)
         self.mailbox = mailbox
         self.log = log
         self.errors = errors
@@ -175,7 +184,8 @@ class ProxySMTPServer(smtpd.SMTPServer):
         if 'To' not in meta:
             meta['To'] = rcpttos
         try:
-            msg = email.message_from_string(data.decode(), policy=email.policy.default)
+            msg = email.message_from_string(data.decode(),
+                                            policy=email.policy.default)
             for item in msg.items():
                 if item[0] not in meta:
                     meta[item[0]] = item[1]

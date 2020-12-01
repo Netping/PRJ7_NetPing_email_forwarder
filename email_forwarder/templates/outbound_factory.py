@@ -29,7 +29,8 @@ class OutboundFactory:
     def template_by_inbound_template(self, inbound_template_id):
         if hasattr(self, 'templates'):
             return [template for template in self.templates
-                    if template.inbound_template_id == inbound_template_id]
+                    if str(template.inbound_template_id) == str(
+                        inbound_template_id)]
         res = self.db.execute(
             ('select * from outbound_templates '
              'where inbound_template_id = %s;'),
@@ -37,13 +38,14 @@ class OutboundFactory:
         templates = [OutboundTemplate(
             db=self.db, logs=self.logs, errors=self.errors,
             **template) for template in res]
-        return templates
+        return templates[0] if templates else None
 
     def template_by_user(self, user, inbound_template_id):
         if hasattr(self, 'templates'):
             return [template for template in self.templates
                     if template.user == user and
-                    template.inbound_template_id == inbound_template_id]
+                    str(template.inbound_template_id) == str(
+                        inbound_template_id)]
         res = self.db.execute(
             ('select * from outbound_templates '
              'where "user"= %s and inbound_template_id = %s;'),

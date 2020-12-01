@@ -34,17 +34,24 @@ def run_tasks(config):
     outbound_admin_templates.fill()
     outbound_user_templates = OutboundFactory(user_db, log, error_log)
     outbound_factory = FactoryWrapper(outbound_admin_templates,
-                                      outbound_user_templates)
+                                      outbound_user_templates, log)
 
     while True:
         emails = mailbox.mail_queue()
         for email in emails:
             try:
                 log.info('Обработка письма %s', email.mail_id)
+                log.info('Обработка письма, получено %s', email.receive_date)
+                log.info('Обработка письма, отправитель %s', email.sender)
+                log.info('Обработка письма, мета информация %s', email.receive_meta)
+                log.info('Обработка письма, содержание %s', email.body)
                 email = email.parse(inbound_templates.all_templates())
-                email = email.send(sender, outbound_factory, mailbox)
+                if email.can_send():
+                    log.info('Отправление письма %s', email.mail_id)
+                    email = email.send(sender, outbound_factory, mailbox)
             except Exception as e:
-                error_log.error('Ошибка обработки письма %s: %s', email.mail_id, str(e))
+                error_log.error('Ошибка обработки письма %s: %s',
+                                email.mail_id, str(e))
                 error_log.error(traceback.format_exc())
         time.sleep(5)
 
