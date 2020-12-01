@@ -28,7 +28,7 @@ class TestInboundTemplate(unittest.TestCase):
             'hnr': '28',
         }
 
-        template = InboundTemplate(1, 'Template #1', test_template)
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
         data_1 = template.parse(example_1)
         data_2 = template.parse(example_2)
         assert test_data_1 == data_1, (f'Ожидаемые значения:\n{test_data_1}\n'
@@ -45,7 +45,7 @@ class TestInboundTemplate(unittest.TestCase):
             'message': 'датчик отсутствует или неисправен',
         }
 
-        template = InboundTemplate(1, 'Template #1', test_template)
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
         data = template.parse(example)
         assert test_data == data, (f'Ожидаемые значения:\n{test_data}\n'
                                    f'Полученные:\n{data}')
@@ -64,7 +64,7 @@ class TestInboundTemplate(unittest.TestCase):
             'hnr': '29',
         }
 
-        template = InboundTemplate(1, 'Template #1', test_template)
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
         data = template.parse(example)
         assert test_data == data, (f'Ожидаемые значения:\n{test_data}\n'
                                    f'Полученные:\n{data}')
@@ -121,7 +121,7 @@ class TestInboundTemplate(unittest.TestCase):
             'cmd_src': 'через веб-интерфейс'
         }
 
-        template = InboundTemplate(1, 'Template #1', test_template)
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
         data_1 = template.parse(example_1)
         data_2 = template.parse(example_2)
         data_3 = template.parse(example_3)
@@ -151,7 +151,7 @@ class TestInboundTemplate(unittest.TestCase):
             'hnr': '85',
         }
 
-        template = InboundTemplate(1, 'Template #1', test_template)
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
         data_1 = template.parse(example_1)
         data_2 = template.parse(example_2)
         assert test_data_1 == data_1, (f'Ожидаемые значения:\n{test_data_1}\n'
@@ -178,7 +178,7 @@ class TestInboundTemplate(unittest.TestCase):
             'legend': None,
         }
 
-        template = InboundTemplate(1, 'Template #1', test_template)
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
         data_1 = template.parse(example_1)
         assert test_data_1 == data_1, (f'Ожидаемые значения:\n{test_data_1}\n'
                                        f'Полученные:\n{data_1}')
@@ -280,7 +280,7 @@ class TestInboundTemplate(unittest.TestCase):
             ),
         )
 
-        template = InboundTemplate(1, 'Template #1', test_template)
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
         for example in examples:
             test_data = template.parse(example[0])
             assert test_data == example[1], (
