@@ -137,3 +137,17 @@ IO{{n}}={{lvl}} "{{memo}}"[[ {{legend}}]]
 
 {{measurement}}: кан.{{n}} "{{memo}}" {{value}}, {{status}}
 ```
+
+## Шаблоны исходящих писем
+Исходящие письма формируются шабнолизатором Jinja2. Полную документацию можно найти на официалном сайте https://jinja.palletsprojects.com/en/2.11.x/
+
+## Модульные тесты
+### Тестирование входящих шаблонов
+```bash
+python -m unittest email_forwarder/tests/test_inbound_template.py
+```
+
+### Тестирование исходящих шаблонов
+```bash
+python -m unittest email_forwarder/tests/test_outbound_template.py
+```
