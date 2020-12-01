@@ -25,6 +25,14 @@ class MailBox:
         return [Mail(db=self.db, logs=self.logs, errors=self.errors,
                      **mail) for mail in res]
 
+    def get_user_template_mails(self, sender: str,
+                                inbound_template_id: int) -> typing.List[Mail]:
+        res = self.db.execute(
+            ('select * from mails where sender = %s and inbound_template_id = %s;'),
+            (sender, inbound_template_id))
+        return [Mail(db=self.db, logs=self.logs, errors=self.errors,
+                     **mail) for mail in res]
+
     def new_mail(self, sender, receive_date, recieve_meta, body) -> Mail:
         res = self.db.execute(
             ('insert into mails(sender, receive_date, receive_meta, body)'

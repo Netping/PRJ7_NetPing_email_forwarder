@@ -48,7 +48,10 @@ class SMTP2GO(Sender):
         msg = MIMEMultipart('mixed')
         msg['Subject'] = subject
         msg['From'] = sender
-        msg['To'] = recipient
+        if isinstance(recipient, list):
+            msg['To'] = ','.join(recipient)
+        else:
+            msg['To'] = recipient
         msg.attach(html_message)
 
         mailServer = smtplib.SMTP(self.host, self.port)
@@ -58,4 +61,4 @@ class SMTP2GO(Sender):
         mailServer.login(self.username, self.password)
         mailServer.sendmail(sender, recipient, msg.as_string())
         mailServer.close()
-
+        return msg.items()

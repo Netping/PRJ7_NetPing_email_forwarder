@@ -1,4 +1,5 @@
 import time
+import traceback
 
 from email_forwarder.config import VERSION, get_parser, get_loggers
 from email_forwarder.db import create_db
@@ -28,6 +29,7 @@ def run_tasks(config):
                      config.smtp2go_user, config.smtp2go_pass, log, error_log)
 
     inbound_templates = InboundFactory(admin_db, log, error_log)
+    inbound_templates.fill()
     outbound_admin_templates = OutboundFactory(admin_db, log, error_log)
     outbound_admin_templates.fill()
     outbound_user_templates = OutboundFactory(user_db, log, error_log)
@@ -37,8 +39,13 @@ def run_tasks(config):
     while True:
         emails = mailbox.mail_queue()
         for email in emails:
-            email = email.parse(inbound_templates.all_templates())
-            email = email.send(sender, outbound_factory, mailbox)
+            try:
+                log.info('Обработка письма %s', email.mail_id)
+                email = email.parse(inbound_templates.all_templates())
+                email = email.send(sender, outbound_factory, mailbox)
+            except Exception as e:
+                error_log.error('Ошибка обработки письма %s: %s', email.mail_id, str(e))
+                error_log.error(traceback.format_exc())
         time.sleep(5)
 
 

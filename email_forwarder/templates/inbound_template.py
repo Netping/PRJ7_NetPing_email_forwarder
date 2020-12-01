@@ -3,10 +3,12 @@ import re
 
 
 class InboundTemplate:
-    def __init__(self, template_id: int, name: str, template: str):
-        self.template_id = template_id
-        self.name = name
-        self.template = template
+    def __init__(self, **kwargs):
+        self.template_id = kwargs.get('id', None)
+        if not self.template_id:
+            self.template_id = kwargs.get('template_id', None)
+        self.name = kwargs.get('name', None)
+        self.template = kwargs.get('template', None)
 
     def parse(self, text: str) -> typing.Optional[dict]:
         """

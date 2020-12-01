@@ -4,6 +4,7 @@ Mail module
 Base class with parse and send functions.
 """
 import typing
+import json
 from datetime import datetime
 
 import jinja2
@@ -55,7 +56,7 @@ class Mail:
         elif inbound_template_id >= 0 and data:
             sql = ('update mails set body = null, data = %s, '
                    'inbound_template_id = %s where id = %s;')
-            args = (data, inbound_template_id, self.mail_id)
+            args = (json.dumps(data), inbound_template_id, self.mail_id)
         else:
             return
 
@@ -104,7 +105,7 @@ class Mail:
         """
         data = self.data
         data['mails'] = [mail.data for mail in mails]
-        return template.render(data)
+        return template.html(data)
 
     def _save_send_info(self, send_meta: dict, send_date: datetime) -> 'Mail':
         """
@@ -116,7 +117,7 @@ class Mail:
         """
         self.db.execute(
             'update mails set send_meta = %s, send_date = %s where id = %s;',
-            (send_meta, send_date, self.mail_id))
+            (json.dumps(send_meta), send_date, self.mail_id))
         res = self.db.execute('select * from mails where id = %s',
                               (self.mail_id, ))
         return Mail(db=self.db, logs=self.logs, errors=self.errors, **res[0])
@@ -138,12 +139,13 @@ class Mail:
             raise Exception(f'Mail id:{self.mail_id} not parsed, template not found')
 
         body = self._prepare_mail(
-            mailbox.get_user_template(self.sender, self.inbound_template_id),
+            mailbox.get_user_template_mails(self.sender, self.inbound_template_id),
             self.get_template(template_fabric))
-
-        sender.send(self.sender, recipient, subject, body)
+        recipient = self.receive_meta.get('To', '')
+        subject = self.receive_meta.get('Subject', '')
+        send_meta = sender.send(self.sender, recipient, subject, body)
 
         return self._save_send_info(send_meta, datetime.now())
 
     def get_template(self, fabric):
-        return fabric.get_template(self.sender, self.inbound_template_id)
+        return fabric.get_user_template(self.sender, self.inbound_template_id)

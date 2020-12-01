@@ -13,16 +13,14 @@ class OutboundFactory:
 
     def fill(self):
         res = self.db.execute(
-            'select * from mails where outbound_templates is null;')
-        self.templates = [OutboundTemplate(
-            db=self.db, logs=self.logs, errors=self.errors,
-            **template) for template in res]
+            'select * from outbound_templates;')
+        self.templates = [OutboundTemplate(**template) for template in res]
 
     def all_templates(self, ) -> typing.List[OutboundTemplate]:
         if hasattr(self, 'templates'):
             return self.templates
         res = self.db.execute(
-            'select * from mails where outbound_templates is null;')
+            'select * from outbound_templates;')
         templates = [OutboundTemplate(
             db=self.db, logs=self.logs, errors=self.errors,
             **template) for template in res]
@@ -33,7 +31,7 @@ class OutboundFactory:
             return [template for template in self.templates
                     if template.inbound_template_id == inbound_template_id]
         res = self.db.execute(
-            ('select * from mails where outbound_templates is null '
+            ('select * from outbound_templates '
              'where inbound_template_id = %s;'),
             (inbound_template_id, ))
         templates = [OutboundTemplate(
@@ -47,7 +45,7 @@ class OutboundFactory:
                     if template.user == user and
                     template.inbound_template_id == inbound_template_id]
         res = self.db.execute(
-            ('select * from mails where outbound_templates is null '
+            ('select * from outbound_templates '
              'where user= %s and inbound_template_id = %s;'),
             (user, inbound_template_id))
         templates = [OutboundTemplate(
@@ -66,8 +64,7 @@ class OutboundFactory:
             update set template = %s
         returning id;
         '''
-        print(user, inbound_template_id, name, template)
-        # res = self.db.execute(sql,
-        #                       (user, inbound_template_id, name, template))
-        # return OutboundTemplate(
-        #     db=self.db, logs=self.logs, errors=self.errors, **res[0])
+        res = self.db.execute(sql,
+                              (user, inbound_template_id, name, template))
+        return OutboundTemplate(
+            db=self.db, logs=self.logs, errors=self.errors, **res[0])

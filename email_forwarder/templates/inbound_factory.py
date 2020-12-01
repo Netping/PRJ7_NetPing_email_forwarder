@@ -13,10 +13,8 @@ class InboundFactory:
 
     def fill(self):
         res = self.db.execute(
-            'select * from mails where inbound_template_id is null;')
-        self.templates = [InboundTemplate(
-            db=self.db, logs=self.logs, errors=self.errors,
-            **template) for template in res]
+            'select * from inbound_templates;')
+        self.templates = [InboundTemplate(**template) for template in res]
 
     def all_templates(self) -> typing.List[InboundTemplate]:
         return self.templates

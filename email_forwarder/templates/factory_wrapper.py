@@ -33,4 +33,4 @@ class FactoryWrapper:
         if not template:
             template = self.admin_templates.template_by_inbound_template(
                 inbound_template_id)
-        return template
+        return template[0] if template else None

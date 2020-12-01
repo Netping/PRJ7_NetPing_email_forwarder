@@ -29,13 +29,13 @@ def run(config):
     procs.append(smtp_proxy_proc)
     smtp_proxy_proc.start()
 
-    # tasks_proc = Process(target=run_tasks, args=(config,))
-    # procs.append(tasks_proc)
-    # tasks_proc.start()
+    tasks_proc = Process(target=run_tasks, args=(config,))
+    procs.append(tasks_proc)
+    tasks_proc.start()
 
-    # web_proc = Process(target=run_web, args=(config,))
-    # procs.append(web_proc)
-    # web_proc.start()
+    web_proc = Process(target=run_web, args=(config,))
+    procs.append(web_proc)
+    web_proc.start()
 
     for proc in procs:
         proc.join()

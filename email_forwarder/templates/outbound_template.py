@@ -4,13 +4,14 @@ from jinja2 import Environment
 
 
 class OutboundTemplate:
-    def __init__(self, template_id: int, inbound_template_id: int,
-                 name: str, template: str, user: typing.Optional[str]):
-        self.template_id = template_id
-        self.inbound_template_id = inbound_template_id
-        self.name = name
-        self.template = template
-        self.user = user
+    def __init__(self, **kwargs):
+        self.template_id = kwargs.get('id', None)
+        if not self.template_id:
+            self.template_id = kwargs.get('template_id', None)
+        self.inbound_template_id = kwargs.get('inbound_template_id', None)
+        self.name = kwargs.get('name', None)
+        self.template = kwargs.get('template', None)
+        self.user = kwargs.get('user', None)
 
     def is_fit(self, user: str, inbound_template_id: int):
         if not self.user:
