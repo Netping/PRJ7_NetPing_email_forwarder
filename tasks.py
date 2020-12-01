@@ -12,7 +12,7 @@ from email_forwarder.templates.factory_wrapper import FactoryWrapper
 
 def run_tasks(config):
     log, error_log = get_loggers(config.log_dir, config.error_log_dir,
-                                 'web.py')
+                                 'tasks.py')
     log.info(f'NetPIng Email forwarder v.{VERSION}, Tasks.')
 
     admin_db = create_db(config.admin_db_host, config.admin_db_port,
@@ -43,7 +43,8 @@ def run_tasks(config):
                 log.info('Обработка письма %s', email.mail_id)
                 log.info('Обработка письма, получено %s', email.receive_date)
                 log.info('Обработка письма, отправитель %s', email.sender)
-                log.info('Обработка письма, мета информация %s', email.receive_meta)
+                log.info('Обработка письма, мета информация %s',
+                         email.receive_meta)
                 log.info('Обработка письма, содержание %s', email.body)
                 email = email.parse(inbound_templates.all_templates())
                 if email.can_send():

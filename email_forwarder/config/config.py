@@ -11,7 +11,10 @@ import typing
 
 VERSION = '0'
 
-def get_parser(description, enable_options=('user_db', 'admin_db', 'smtp', 'smtp2go', 'web')) -> argparse.ArgumentParser:
+
+def get_parser(description,
+               enable_options=('user_db', 'admin_db', 'smtp',
+                               'smtp2go', 'web')) -> argparse.ArgumentParser:
     """
         Args
             - description -- A description of what the program does
@@ -37,55 +40,70 @@ def get_parser(description, enable_options=('user_db', 'admin_db', 'smtp', 'smtp
     add_logs(parser)
     return parser
 
+
 def add_user_db(parser: argparse.ArgumentParser) -> None:
     """
         Add user DB arguments into parser
 
         Args:
-            - parser -- object argparse.ArgumentParser, in which add new arguments.
+            - parser -- object argparse.ArgumentParser,
+                        in which add new arguments.
     """
     parser.add_argument('--user_db_host', required=True, type=str,
                         help=('User DB host, name or ip. '
-                              'Example, --user_db_host 127.0.0.1, for local PostgreSQL server.'))
+                              'Example, --user_db_host 127.0.0.1, '
+                              'for local PostgreSQL server.'))
     parser.add_argument('--user_db_port', required=True, type=int,
                         help=('User DB port. Example, --user_db_port 5432'))
     parser.add_argument('--user_db_username', required=True, type=str,
-                        help=('User DB username. Example, --user_db_username postgres'))
+                        help=('User DB username. '
+                              'Example, --user_db_username postgres'))
     parser.add_argument('--user_db_password', required=True, type=str,
-                        help=('User DB password. Example, --user_db_password qwerty'))
+                        help=('User DB password. '
+                              'Example, --user_db_password qwerty'))
     parser.add_argument('--user_db_name', required=True, type=str,
-                        help=('User DB name. Example, --user_db_name database'))
+                        help=('User DB name. '
+                              'Example, --user_db_name database'))
+
 
 def add_admin_db(parser: argparse.ArgumentParser) -> None:
     """
         Add admin DB arguments into parser
 
         Args:
-            - parser -- object argparse.ArgumentParser, in which add new arguments.
+            - parser -- object argparse.ArgumentParser,
+                        in which add new arguments.
     """
     parser.add_argument('--admin_db_host', required=True, type=str,
                         help=('Admin DB host, name or ip. '
-                              'Example, --admin_db_host 127.0.0.1, for local PostgreSQL server.'))
+                              'Example, --admin_db_host 127.0.0.1, '
+                              'for local PostgreSQL server.'))
     parser.add_argument('--admin_db_port', required=True, type=int,
                         help=('Admin DB port. Example, --admin_db_port 5432'))
     parser.add_argument('--admin_db_username', required=True, type=str,
-                        help=('Admin DB username. Example, --admin_db_username postgres'))
+                        help=('Admin DB username. '
+                              'Example, --admin_db_username postgres'))
     parser.add_argument('--admin_db_password', required=True, type=str,
-                        help=('Admin DB password. Example, --admin_db_password qwerty'))
+                        help=('Admin DB password. '
+                              'Example, --admin_db_password qwerty'))
     parser.add_argument('--admin_db_name', required=True, type=str,
-                        help=('Admin DB name. Example, --admin_db_name database'))
+                        help=('Admin DB name. '
+                              'Example, --admin_db_name database'))
+
 
 def add_smtp(parser: argparse.ArgumentParser) -> None:
     """
         Add SMTP arguments into parser
 
         Args:
-            - parser -- object argparse.ArgumentParser, in which add new arguments.
+            - parser -- object argparse.ArgumentParser,
+                        in which add new arguments.
     """
     parser.add_argument('--smtp_host', required=True, type=str,
                         help=('SMTP-server address to bind to. '
-                              'Pass 0.0.0.0 to listens on all interfaces including '
-                              'the external one. Example, --smtp_host 0.0.0.0'))
+                              'Pass 0.0.0.0 to listens on all interfaces '
+                              'including the external one. '
+                              'Example, --smtp_host 0.0.0.0'))
     parser.add_argument('--smtp_port', required=True, type=int,
                         help=('SMTP-server port to bind to. '
                               'Values below 1024 require root privileges. '
@@ -94,59 +112,84 @@ def add_smtp(parser: argparse.ArgumentParser) -> None:
                         help=('SMTP-server login for authentificate users. '
                               'Example, --smtp_login user'))
     parser.add_argument('--smtp_pass', required=True, type=str,
-                        help=('SMTP-server password for authentificate users.'))
+                        help=('SMTP-server password for '
+                              'authentificate users.'))
+
 
 def add_smtp2go(parser: argparse.ArgumentParser) -> None:
     """
         Add SMTP2GO service arguments into parser
 
         Args:
-            - parser -- object argparse.ArgumentParser, in which add new arguments.
+            - parser -- object argparse.ArgumentParser,
+                        in which add new arguments.
     """
     parser.add_argument('--smtp2go_host', required=True, type=str,
-                        help=('SMTP2GO address. Example, --smtp2go_host mail.smtp2go.com'))
+                        help=('SMTP2GO address. '
+                              'Example, --smtp2go_host mail.smtp2go.com'))
     parser.add_argument('--smtp2go_port', required=True, type=int,
                         help=('SMTP2GO port. Example, --smtp2go_port 2525'))
     parser.add_argument('--smtp2go_user', required=True, type=str,
-                        help=('SMTP2GO username. Example, --smtp2go_user username'))
+                        help=('SMTP2GO username. '
+                              'Example, --smtp2go_user username'))
     parser.add_argument('--smtp2go_pass', required=True, type=str,
-                        help=('SMTP2GO username. Example, --smtp2go_pass password'))
+                        help=('SMTP2GO username. '
+                              'Example, --smtp2go_pass password'))
+
 
 def add_web(parser: argparse.ArgumentParser) -> None:
     """
         Add WEB arguments into parser
 
         Args:
-            - parser -- object argparse.ArgumentParser, in which add new arguments.
+            - parser -- object argparse.ArgumentParser,
+                        in which add new arguments.
     """
     parser.add_argument('--web_host', required=True, type=str,
                         help=('WEB-server address to bind to. '
-                              'Pass 0.0.0.0 to listens on all interfaces including '
-                              'the external one. Example, --web_host 0.0.0.0'))
+                              'Pass 0.0.0.0 to listens on all interfaces '
+                              'including the external one. '
+                              'Example, --web_host 0.0.0.0'))
     parser.add_argument('--web_port', required=True, type=int,
                         help=('WEB-server port to bind to. '
                               'Values below 1024 require root privileges. '
                               'Example, --web_port 8431'))
+
 
 def add_logs(parser: argparse.ArgumentParser) -> None:
     """
         Add logs arguments into parser
 
         Args:
-            - parser -- object argparse.ArgumentParser, in which add new arguments.
+            - parser -- object argparse.ArgumentParser,
+                        in which add new arguments.
     """
     parser.add_argument('--log_dir', required=True, type=str,
-                        help=('Dir for log.txt. Example for current dir, .'))
+                        help=('Dir for log.txt. '
+                              'Example for current dir, .'))
     parser.add_argument('--error_log_dir', required=True, type=str,
-                        help=('Dir for errors.txt. Example for current dir, .'))
+                        help=('Dir for errors.txt. '
+                              'Example for current dir, .'))
 
 
-def get_loggers(log_dir: str, error_log_dir: str, prefix: str) -> typing.Tuple[logging.Logger, logging.Logger]:
-    formatter = logging.Formatter(f'%(levelname)s %(asctime)s - {prefix} - %(message)s')
+def get_loggers(log_dir: str, error_log_dir: str,
+                prefix: str) -> typing.Tuple[logging.Logger, logging.Logger]:
+    """
+    Prepare loggers for info/debug and error messages.
+
+    Args:
+        - log_dir -- dir for logs.txt
+        - error_log_dir -- dir for errors.txt
+        - prefix -- prefix for log messages ans log name
+
+    Return two logging.Logger objects: logs, errors
+    """
+    formatter = logging.Formatter(
+        f'%(levelname)s %(asctime)s - {prefix} - %(message)s')
 
     if not os.path.exists(log_dir):
         os.makedirs(log_dir)
-    log = logging.getLogger("logs")
+    log = logging.getLogger(f"{prefix}-logs")
     handler = logging.FileHandler(
         os.path.join(log_dir, 'logs.txt'),
         encoding='utf8')
@@ -156,7 +199,7 @@ def get_loggers(log_dir: str, error_log_dir: str, prefix: str) -> typing.Tuple[l
 
     if not os.path.exists(error_log_dir):
         os.makedirs(error_log_dir)
-    errors = logging.getLogger("errors")
+    errors = logging.getLogger(f"{prefix}-errors")
     err_handler = logging.FileHandler(
         os.path.join(error_log_dir, 'errors.txt'),
         encoding='utf8')
