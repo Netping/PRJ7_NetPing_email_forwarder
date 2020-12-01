@@ -1,4 +1,5 @@
 import logging
+import re
 import typing
 import traceback
 
@@ -34,11 +35,19 @@ class WebServer:
                               'edit_outbound_template',
                               self.edit_outbound_template,
                               methods=['GET', 'POST'])
+        self.app.add_url_rule('/favicon.ico', 'favicon', self.favicon)
+    
+    def favicon(self):
+        flask.abort(404, description="Resource not found")
 
     def index(self):
         if flask.request.method == 'POST':
             try:
                 user = flask.request.form.get('login', None)
+                if not re.match(r'[^@]+@[^@]+\.[^@]+', user):
+                    self.log.info('Попытка логина с некорретным email %s',
+                                  user)
+                    return flask.redirect(flask.url_for('index'))
                 self.log.info('Перевод на страницу пользователя %s', user)
                 if user:
                     return flask.redirect(
