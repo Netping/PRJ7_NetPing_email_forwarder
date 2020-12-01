@@ -1,10 +1,10 @@
 from multiprocessing import Process
 
-from db import create_db
 from smtp import run_smtp_proxy
 from tasks import run_tasks
 from web import run_web
-from config import VERSION, get_parser, get_loggers
+from email_forwarder.db import create_db
+from email_forwarder.config import VERSION, get_parser, get_loggers
 
 
 def run(config):
@@ -29,13 +29,13 @@ def run(config):
     procs.append(smtp_proxy_proc)
     smtp_proxy_proc.start()
 
-    tasks_proc = Process(target=run_tasks, args=(config,))
-    procs.append(tasks_proc)
-    tasks_proc.start()
+    # tasks_proc = Process(target=run_tasks, args=(config,))
+    # procs.append(tasks_proc)
+    # tasks_proc.start()
 
-    web_proc = Process(target=run_web, args=(config,))
-    procs.append(web_proc)
-    web_proc.start()
+    # web_proc = Process(target=run_web, args=(config,))
+    # procs.append(web_proc)
+    # web_proc.start()
 
     for proc in procs:
         proc.join()

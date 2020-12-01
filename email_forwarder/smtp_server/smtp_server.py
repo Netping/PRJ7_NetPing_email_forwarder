@@ -8,7 +8,10 @@ import base64
 import logging
 import typing
 import smtpd
+import traceback
 from datetime import datetime
+from email.parser import Parser
+import email
 
 from email_forwarder.mails.mailbox import MailBox
 
@@ -144,12 +147,13 @@ class ProxySMTPServer(smtpd.SMTPServer):
                  authdata: typing.Tuple[str, str],
                  mailbox: MailBox,
                  log: logging.Logger,
-                 errors: logging.Logger,
-                 *args, **kwargs):
-        super(ProxySMTPServer, self).__init__(localaddr, None, **kwargs)
+                 errors: logging.Logger):
+        super(ProxySMTPServer, self).__init__(localaddr, None)
         self.channel_class = lambda *args, **kwargs: AuthChannel(
             authdata, *args, **kwargs)
         self.mailbox = mailbox
+        self.log = log
+        self.errors = errors
 
     def process_message(self, peer, mailfrom, rcpttos, data, **kwargs):
         """
@@ -161,9 +165,27 @@ class ProxySMTPServer(smtpd.SMTPServer):
             - rcpttos -- envelope recipient(s)
             - data -- string containing the contents of the e-mail
         """
+        self.log.info('Получено письмо от %s:', peer)
+        self.log.info('Отправитель: %s', mailfrom)
+        self.log.info('Получатель(-и): %s', rcpttos)
+        self.log.info('Сообщение: %s', data.decode())
         meta = dict(kwargs)
         if 'From' not in meta:
             meta['From'] = mailfrom
         if 'To' not in meta:
             meta['To'] = rcpttos
-        self.mailbox.new_mail(mailfrom, datetime.now(), meta, data.decode())
+        try:
+            msg = email.message_from_string(data.decode(), policy=email.policy.default)
+            for item in msg.items():
+                if item[0] not in meta:
+                    meta[item[0]] = item[1]
+            self.mailbox.new_mail(mailfrom, datetime.now(), meta,
+                                  msg.get_content())
+        except Exception as e:
+            try:
+                self.mailbox.new_mail(mailfrom, datetime.now(), meta,
+                                      data.decode())
+            except Exception:
+                pass
+            self.errors.error('Ошибка сохранения нового письма: %s', str(e))
+            self.errors.error(traceback.format_exc())

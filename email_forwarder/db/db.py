@@ -40,11 +40,11 @@ schemas = {
         create table if not exists outbound_templates
             (
                 id serial primary key,
-                user text not null,
+                "user" text not null,
                 name text not null,
                 template text not null,
                 inbound_template_id integer not null,
-                CONSTRAINT one_outbound_template UNIQUE(user, inbound_template_id)
+                CONSTRAINT one_outbound_template UNIQUE("user", inbound_template_id)
             );
         ''',
 
@@ -94,6 +94,7 @@ class DB:
                                            user=self.username,
                                            password=self.password,
                                            dbname=self.dbname)
+        self.connection.autocommit = True
 
     def cursor(self):
         """
@@ -113,8 +114,10 @@ class DB:
             - args -- arguments to be insert into query
         """
         with self.cursor() as cursor:
-            res = cursor.execute(sql, args)
-            return res.fetchall()
+            cursor.execute(sql, args)
+            if not cursor.description:
+                return None
+            return cursor.fetchall()
 
     def check_structure(self, dbtype) -> None:
         """
@@ -128,6 +131,9 @@ class DB:
             raise Exception('Неверно определен тип схемы БД')
         for sql in schema:
             self.execute(sql)
+
+    def close(self):
+        self.connection.close()
 
 
 def create_db(host: str, port: int, username: str, password: str, dbname: str):

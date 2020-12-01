@@ -1,5 +1,6 @@
 import logging
 import typing
+import json
 
 from email_forwarder.db.db import DB
 
@@ -26,9 +27,9 @@ class MailBox:
 
     def new_mail(self, sender, receive_date, recieve_meta, body) -> Mail:
         res = self.db.execute(
-            ('insert into mails(sender, receive_date, recieve_meta, body)'
+            ('insert into mails(sender, receive_date, receive_meta, body)'
              'values(%s, %s, %s, %s) returning id;'),
-            (sender, receive_date, recieve_meta, body))
+            (sender, receive_date, json.dumps(recieve_meta), body))
         return self.get_mail(res[0]['id'])
 
     def mail_queue(self) -> typing.List[Mail]:
