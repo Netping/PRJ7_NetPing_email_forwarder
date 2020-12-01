@@ -9,7 +9,7 @@ import os
 import typing
 
 
-VERSION = '0'
+VERSION = '1.0'
 
 
 def get_parser(description,
