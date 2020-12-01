@@ -93,8 +93,6 @@ class WebServer:
     def edit_outbound_template(self, user, template_id):
         template = [tmp for tmp in self.inbound_templates
                     if str(tmp.template_id) == str(template_id)]
-        # admoin_outbound = [tmp for tmp in self.outbound_admin_templates
-        #                    if str(tmp.inbound_template_id) == str(template_id)]
         if template:
             template = template[0]
         else:
