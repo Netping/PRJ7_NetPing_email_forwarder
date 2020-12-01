@@ -46,5 +46,8 @@ class InboundTemplate:
                        lambda m: r'(?P<' + m.group(1) + '>' + (m.group(3) or default_value_template) + r')?', escaped_template)
         regex = re.sub(r'\[\[(.*)\]\]', r'(\1)?', regex)
         
-        data = re.search(regex, text).groupdict()
-        return data
+        
+        data = re.search(regex, text)
+        if not data:
+            return None
+        return data.groupdict()

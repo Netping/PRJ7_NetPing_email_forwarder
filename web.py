@@ -28,7 +28,7 @@ def run_web(config):
     server = WebServer(config.web_host, config.web_port,
                        inbound_factory.all_templates(),
                        outbound_factory.all_templates(),
-                       mailbox, factory, None)
+                       factory, mailbox, log, error_log)
     server.run()
 
 
