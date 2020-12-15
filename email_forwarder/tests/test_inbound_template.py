@@ -69,6 +69,25 @@ class TestInboundTemplate(unittest.TestCase):
         assert test_data == data, (f'Ожидаемые значения:\n{test_data}\n'
                                    f'Полученные:\n{data}')
 
+    def test_parse_term_humidity_2(self):
+        test_template = ('Датчик влажности {{n}}[[ "{{memo}}"]] - {{h}}% '
+                         '({{status}} {{lnr}}..{{hnr}}%)')
+
+        example = 'Датчик влажности 1 - 67% (в норме 40..85%)'
+        test_data = {
+            'n': '1',
+            'memo': None,
+            'h': '67',
+            'status': 'в норме',
+            'lnr': '40',
+            'hnr': '85',
+        }
+
+        template = InboundTemplate(id=1, name='Template #1', template=test_template)
+        data = template.parse(example)
+        assert test_data == data, (f'Ожидаемые значения:\n{test_data}\n'
+                                   f'Полученные:\n{data}')
+
     def test_parse_term_releay(self):
         action_options = '|'.join([
             'получило команду "Вкл"',
