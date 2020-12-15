@@ -30,7 +30,9 @@ class TestOutboundTemplate(unittest.TestCase):
             'value_2': '456',
             'value_3': '789',
         }
-        template = OutboundTemplate(id=1, inbound_template_id=1, name='Template #1', template=test_template, user=None)
+        template = OutboundTemplate(id=1, inbound_template_id=1,
+                                    name='Template #1', template=test_template,
+                                    user=None)
         html = template.html(values)
         assert html == test_html, (f'Ожидаемый html:\n{test_html}\n'
                                    f'Полученный:\n{html}')
@@ -90,7 +92,9 @@ class TestOutboundTemplate(unittest.TestCase):
                 }
             ]
         }
-        template = OutboundTemplate(id=1, inbound_template_id=1, name='Template #1', template=test_template, user=None)
+        template = OutboundTemplate(id=1, inbound_template_id=1,
+                                    name='Template #1', template=test_template,
+                                    user=None)
         html = template.html(values)
         assert html == test_html, (f'Ожидаемый html:\n{test_html}\n'
                                    f'Полученный:\n{html}')

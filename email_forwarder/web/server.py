@@ -17,7 +17,8 @@ class WebServer:
                  inbound_templates: typing.List[InboundTemplate],
                  outbound_admin_templates: typing.List[OutboundTemplate],
                  outbound_templates: OutboundFactory,
-                 mailbox: MailBox, log: logging.Logger, errors: logging.Logger):
+                 mailbox: MailBox, log: logging.Logger,
+                 errors: logging.Logger):
         self.host = host
         self.port = port
         self.inbound_templates = inbound_templates
@@ -36,7 +37,7 @@ class WebServer:
                               self.edit_outbound_template,
                               methods=['GET', 'POST'])
         self.app.add_url_rule('/favicon.ico', 'favicon', self.favicon)
-    
+
     def favicon(self):
         flask.abort(404, description="Resource not found")
 

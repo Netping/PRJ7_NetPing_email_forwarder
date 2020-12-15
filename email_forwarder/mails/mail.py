@@ -190,7 +190,7 @@ class Mail:
         send_meta = sender.send(self.sender, recipient, subject, body)
 
         self.logs.info('Сохранение метаданных письма id:%s : %s',
-                      self.mail_id, send_meta)
+                       self.mail_id, send_meta)
         return self._save_send_info(send_meta, datetime.now())
 
     def can_send(self) -> bool:

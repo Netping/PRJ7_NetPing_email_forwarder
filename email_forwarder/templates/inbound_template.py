@@ -37,16 +37,17 @@ class InboundTemplate:
             '!': r'\!',
         }))
 
-        field_template = r'{{\s*([\d\w]+)(\:([\w\d\s\+\%\\\-\_\.\|\s\"\']+))?\s*}}'
-        group_template = r'(?P<\1>[\\w\\d\\s\\+\\%\\-\\_\\.]+)?'
-        group_options_template = r'(?P<\1>\2)?'
+        field_template = (r'{{\s*([\d\w]+)(\:([\w\d\s\+\%\\\-\_'
+                          r'\.\|\s\"\']+))?\s*}}')
         default_value_template = r'[\w\d\s\+\%\-\_\.]+'
 
         regex = re.sub(field_template,
-                       lambda m: r'(?P<' + m.group(1) + '>' + (m.group(3) or default_value_template) + r')?', escaped_template)
+                       lambda m: (r'(?P<' + m.group(1) + '>' +
+                                  (m.group(3) or default_value_template) +
+                                  r')?'),
+                       escaped_template)
         regex = re.sub(r'\[\[(.*)\]\]', r'(\1)?', regex)
-        
-        
+
         data = re.search(regex, text)
         if not data:
             return None

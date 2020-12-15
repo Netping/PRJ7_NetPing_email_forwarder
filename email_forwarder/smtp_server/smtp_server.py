@@ -10,7 +10,6 @@ import typing
 import smtpd
 import traceback
 from datetime import datetime
-from email.parser import Parser
 import email
 
 from email_forwarder.mails.mailbox import MailBox
